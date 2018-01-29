@@ -7,11 +7,11 @@
 class Top250():
     # 电影链接
     @property
-    def movie_links(self):
+    def movie_link(self):
         return self._movie_links
 
-    @movie_links.setter
-    def movie_links(self, value):
+    @movie_link.setter
+    def movie_link(self, value):
         self._movie_links = value
 
     # 电影名
@@ -23,7 +23,7 @@ class Top250():
     def movie_names(self, value):
         self._movie_names = value
 
-    # 电影制作（类型，与制作人员）
+    # 电影制作（演员，与制作人员）
     @property
     def movie_create(self):
         return self._movie_create
