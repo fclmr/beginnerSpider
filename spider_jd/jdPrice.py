@@ -10,6 +10,10 @@ from urllib.parse import quote
 import re
 import json
 
+from spider_jd.dataProcess import Sql
+from spider_jd.model import JdPrice
+
+
 class jdPrice():
     def __init__(self):
         self.keyword = 'ikbc c87'
@@ -39,29 +43,37 @@ class jdPrice():
     def parse_html(self, html):
         soup = BeautifulSoup(html.decode('utf-8'), 'lxml')
         p_list = soup.find_all('li', attrs={'class': 'gl-item'})
+        sql = Sql()
         for i in p_list:
+            jdPriceItem = JdPrice()
             p_link = self.getSoup(i.find('div', attrs={'class': 'p-img'}).find('a'), 'href')
             p_title = self.getSoup(i.find('div', attrs={'class': 'p-img'}).find('a'), 'title')
             #p_store_name = i.find('div', attrs={'class': 'p-shop'}).find('a', attrs={'class': 'curr-shop'}).get_text()
             p_store_name = self.getSoup(i.find('div', attrs={'class': 'p-shop'}).find('a', attrs={'class': 'curr-shop'}), 'text')
             sub_url = 'https:%s' % p_link
-            print(sub_url)
+            #print(sub_url)
+            jdPriceItem.p_link = sub_url
             sub_html = self.download_sub_page(sub_url)
             sub_soup = BeautifulSoup(sub_html.decode('gbk', 'ignore'), 'lxml')
             item_info = sub_soup.find('div', attrs={'class': 'product-intro clearfix'}).find('div', attrs={'class': 'itemInfo-wrap'})
             p_name = self.getSoup(item_info.find('div', attrs={'class': 'sku-name'}), 'text').strip()
-            print(p_name)
-            print(p_title)
+            #print(p_name)
+            jdPriceItem.p_name = p_name
+            #print(p_title)
+            jdPriceItem.p_title = p_title
             p_detail_li = sub_soup.find('div', attrs={'class': 'p-parameter'}).find('ul', attrs={'class', 'parameter2 p-parameter-list'}).find_all('li')
             p_detail = ''
             for j in p_detail_li:
                 p_detail += self.getSoup(j, 'text') + '; '
 
-            print(p_detail)
-            print(p_store_name)
+            #print(p_detail)
+            jdPriceItem.p_detail = p_detail
+            #print(p_store_name)
+            jdPriceItem.p_store_name = p_store_name
 
             p_comment_num = self.getSoup(i.find('div', attrs={'class': 'p-commit'}).find('strong').find('a'), 'text')
-            print(p_comment_num)
+            #print(p_comment_num)
+            jdPriceItem.p_comment_num = p_comment_num
 
             # 价格，ajax回传
             pattern = re.compile(r"(?<=/)\d.+?(?=\.)")
@@ -71,7 +83,9 @@ class jdPrice():
             price_data = self.download_html(price_url)
             price_json = json.loads(price_data)
             p_price = price_json[0].get('op')
-            print(p_price)
+            #print(p_price)
+            jdPriceItem.p_price = p_price
+
 
 
     def main(self):

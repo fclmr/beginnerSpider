@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/beginnerSpider.iml" filepath="$PROJECT_DIR$/.idea/beginnerSpider.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/commonSpider.iml" filepath="$PROJECT_DIR$/.idea/commonSpider.iml" />
     </modules>
   </component>

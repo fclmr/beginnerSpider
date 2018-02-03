@@ -31,3 +31,6 @@ class Sql(object):
             self.connect.commit()
         except Exception as error:
             print(error)
+        finally:
+            self.cursor.close()
+            self.connect.close()
