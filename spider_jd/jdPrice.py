@@ -7,6 +7,8 @@
 import requests
 from bs4 import BeautifulSoup
 from urllib.parse import quote
+import re
+import json
 
 class jdPrice():
     def __init__(self):
@@ -62,9 +64,14 @@ class jdPrice():
             print(p_comment_num)
 
             # 价格，ajax回传
-            print(sub_url)
-            price_url = 'https://p.3.cn/prices/mgets?skuIds='
-
+            pattern = re.compile(r"(?<=/)\d.+?(?=\.)")
+            skuid = re.search(pattern, sub_url)
+            # print(skuid.group(0))
+            price_url = 'https://p.3.cn/prices/mgets?skuIds=' + skuid.group(0)
+            price_data = self.download_html(price_url)
+            price_json = json.loads(price_data)
+            p_price = price_json[0].get('op')
+            print(p_price)
 
 
     def main(self):
