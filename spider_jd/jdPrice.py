@@ -86,11 +86,17 @@ class jdPrice():
             #print(p_price)
             jdPriceItem.p_price = p_price
 
+            jdPriceItem.p_price_plus = ''
+
+            sql.insert_jdPrice(jdPriceItem)
+
+        sql.close()
 
 
     def main(self):
         data = self.download_html(self.base_url)
         self.parse_html(data)
+
 
 jdPrice = jdPrice()
 jdPrice.main()

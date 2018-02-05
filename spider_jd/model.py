@@ -4,6 +4,8 @@
 # @Author: lio
 # @Date: 2018-01-29
 
+from .utils import Utils
+
 class JdPrice():
 
     # 商品地址
@@ -69,4 +71,11 @@ class JdPrice():
     def p_price(self, value):
         self._p_price = value
 
+    # 价格
+    @property
+    def p_price_plus(self):
+        return self._p_price_plus
 
+    @p_price_plus.setter
+    def p_price_plus(self, value):
+        self._p_price_plus = value
