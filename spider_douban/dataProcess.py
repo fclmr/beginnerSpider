@@ -31,6 +31,7 @@ class Sql(object):
             self.connect.commit()
         except Exception as error:
             print(error)
-        finally:
-            self.cursor.close()
-            self.connect.close()
+
+    def close(self):
+        self.cursor.close()
+        self.connect.close()

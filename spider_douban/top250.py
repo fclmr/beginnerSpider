@@ -78,5 +78,7 @@ class Top250Spider():
         for movie in self.movies:
             sql.insert_top250(movie)
 
+        sql.close()
+
 top250Spider = Top250Spider()
 top250Spider.main()

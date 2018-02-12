@@ -16,7 +16,7 @@ from spider_jd.model import JdPrice
 
 class jdPrice():
     def __init__(self):
-        self.keyword = 'ikbc c87'
+        self.keyword = 'gtx1060'
         self.base_url = "https://search.jd.com/Search?keyword=%s&enc=utf-8&wtype=1" % quote(self.keyword)
 
     def download_html(self, url):
@@ -30,6 +30,11 @@ class jdPrice():
 
     def download_sub_page(self, sub_url):
         return self.download_html(sub_url)
+
+    # 翻页
+    def next_page(self, url):
+        self.download_html(url)
+
 
     def getSoup(self, soup, attr):
         if soup is None:
@@ -82,7 +87,7 @@ class jdPrice():
             price_url = 'https://p.3.cn/prices/mgets?skuIds=' + skuid.group(0)
             price_data = self.download_html(price_url)
             price_json = json.loads(price_data)
-            p_price = price_json[0].get('op')
+            p_price = price_json[0].get('p')
             #print(p_price)
             jdPriceItem.p_price = p_price
 
@@ -94,8 +99,13 @@ class jdPrice():
 
 
     def main(self):
-        data = self.download_html(self.base_url)
-        self.parse_html(data)
+        i = 1
+        while i < 10:
+            print("第%d页" % i)
+            next_url = self.base_url + '&page=' + str(i)
+            data = self.download_html(next_url)
+            self.parse_html(data)
+            i += 2
 
 
 jdPrice = jdPrice()
