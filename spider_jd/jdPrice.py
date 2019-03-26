@@ -90,17 +90,33 @@ class jdPrice():
             p_price = price_json[0].get('p')
             #print(p_price)
             jdPriceItem.p_price = p_price
+            try:
+                jdPriceItem.p_price_plus = price_json[0].get('tpp')
+            except:
+                jdPriceItem.p_price_plus = ''
 
-            jdPriceItem.p_price_plus = ''
-
-            sql.insert_jdPrice(jdPriceItem)
+            # 图片
+            img_url = ''
+            try:
+                p_img = 'https:' + self.getSoup(i.find('div', attrs={'class': 'p-img'}).find('a').find('img'), 'src')
+                print(p_img)
+                pattern_img = re.compile(r"(?<=com).+?jpg")
+                img_path = re.search(pattern_img, p_img)
+                img_url = 'imgs/' + img_path.group(0).replace('/', '')
+                img_file = open(img_url, 'wb')
+                img_file.write(requests.get(p_img).content)
+                img_file.close()
+            except:
+                pass
+            jdPriceItem.p_img = img_url
+            # sql.insert_jdPrice(jdPriceItem)
 
         sql.close()
 
 
     def main(self):
         i = 1
-        while i < 10:
+        while i < 2:
             print("第%d页" % i)
             next_url = self.base_url + '&page=' + str(i)
             data = self.download_html(next_url)

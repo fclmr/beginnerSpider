@@ -79,3 +79,12 @@ class JdPrice():
     @p_price_plus.setter
     def p_price_plus(self, value):
         self._p_price_plus = value
+
+    # 图片
+    @property
+    def p_img(self):
+        return self._p_img
+
+    @p_img.setter
+    def p_img(self, value):
+        self._p_img = value
